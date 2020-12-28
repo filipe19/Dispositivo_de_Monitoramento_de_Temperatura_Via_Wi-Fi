@@ -1,18 +1,19 @@
-#!/usr/bin/env node
+#!/usr/bin/env node // instância shebang Unix
 
+// Adicionando um servidor http
 var app = require('http').createServer(handler)
   , io = require('socket.io').listen(app)
   , fs = require('fs');
 var path = require('path');
 
+//iniciando a aplicação usando a porta 8081
 app.listen(8081);
 
-// variables
+// dec variaveis
 var child=require('child_process');
 var prog;
 var prog2;
 var runscope=0;
-
 var progpath='/home/pi/development/therm/';
 var values = "abc";
 var rfile = progpath;
@@ -21,7 +22,8 @@ var cprog2;
 var oldinfo1='1';
 var oldinfo2='2';
 
-// HTML 
+// HTML --- Função de Middleware 
+// Para acesso ao objeto de solicitação (req) e ao objeto de resposta (res), 
 function handler (req, res)
 {
 	console.log('url is '+req.url.substr(1));
@@ -30,6 +32,8 @@ function handler (req, res)
 //		reqfile="index.html"; // permissão de acesso
 //	}
 	fs.readFile(progpath+reqfile,
+		    
+// O parâmetro err recebe um objeto de erro se houver um erro, caso contrário, dados.		  
   function (err, data)
   {
     if (err)
@@ -42,6 +46,7 @@ function handler (req, res)
   });
 }
 
+// Resposta ao cliente - Escrevendo o cabeçalho de resposta na aplicação
 function ads_adc(v)
 {
 	prog=child.exec(progpath+'therm'), function (error, data, stderr) {
