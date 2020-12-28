@@ -72,8 +72,7 @@ unsigned char rxbuf[BUFSIZE];
 int local_comp;
 
 // Funções
-int
-delay_ms(unsigned int msec)
+int delay_ms(unsigned int msec)
 {
   int ret;
   struct timespec a;
@@ -116,8 +115,7 @@ void setup_io()
    gpio = (volatile unsigned *)gpio_map;
 }
 
-int
-spi_open(int* f_desc, int sel, uint8_t config)
+int spi_open(int* f_desc, int sel, uint8_t config)
 {
 	uint8_t spi_bits = 8;
 	int ret;
@@ -172,8 +170,7 @@ spi_open(int* f_desc, int sel, uint8_t config)
 }
 
 //escreve comandos para o LCD
-void
-lcd_writecom(unsigned char c)
+void lcd_writecom(unsigned char c)
 {
 	int ret;
 	
@@ -196,8 +193,7 @@ lcd_writecom(unsigned char c)
   }
 }
 
-void
-lcd_writedata(unsigned char c)	//escreve os dados
+void lcd_writedata(unsigned char c)	//escreve os dados
 {
 	int ret;
 	
@@ -220,8 +216,7 @@ lcd_writedata(unsigned char c)	//escreve os dados
   }
 }
 
-void
-lcd_clear(void)
+void lcd_clear(void)
 {
 	lcd_writecom(0x01);
 	delay_ms(2);
@@ -229,8 +224,7 @@ lcd_clear(void)
 	delay_ms(2);
 }
 
-void
-lcd_display_string(unsigned char line_num, char *ptr) //Escreve uma string na linha do LCD
+void lcd_display_string(unsigned char line_num, char *ptr) //Escreve uma string na linha do LCD
 {
 
 	if(line_num==0)		//primeira linha
@@ -250,8 +244,7 @@ lcd_display_string(unsigned char line_num, char *ptr) //Escreve uma string na li
 }
 
 // inicializa e limpa o display
-void
-lcd_init(void)
+void lcd_init(void)
 {
 	GPIO_SET = 1<<LCD_RS_GPIO;
 	lcd_writecom(0x30);	//acorda
@@ -268,8 +261,7 @@ lcd_init(void)
 
 // envia quatro bytes (dois bytes de configuração repetidos uma segunda vez, e retorna dois bytes
 
-int
-therm_transact(void)
+int therm_transact(void)
 {
 	int ret;
 	
@@ -304,7 +296,7 @@ therm_transact(void)
   return(ret);
 }
 
-Int local_compensation(int local_code) //está função transforma o código do sensor de temperatura interna para o de compensação, no qual ainda é adicionado ao código do termopar
+int local_compensation(int local_code) //está função transforma o código do sensor de temperatura interna para o de compensação, no qual ainda é adicionado ao código do termopar
 {
 	float tmp,local_temp;
 	int comp;
@@ -364,8 +356,8 @@ Int local_compensation(int local_code) //está função transforma o código do 
 	return comp;
 }
 
-//está função é usada para converter resultados do conversor AD para temperatura
-Int adc_code2temp(int code)	
+//Função usada para converter resultados do conversor AD para temperatura
+int adc_code2temp(int code)	
 {
 	float temp;
 	int t;
@@ -451,8 +443,8 @@ Int adc_code2temp(int code)
 	else if (code > 0x09E5 && code < 0x0A1B) temp = (float)(10*(temp-0x09E5)) / 0x0036 + 480.0f;  //  480 C to  490 C
 	else if (code > 0x0A1B && code < 0x0A52) temp = (float)(10*(temp-0x0A1B)) / 0x0036 + 490.0f;  //  490 C to  500 C
 
-       else
-        return (int)(10*0x270F);
+       	else
+   	return (int)(10*0x270F);
 
 	t = (int)(10*temp);
 
@@ -460,8 +452,7 @@ Int adc_code2temp(int code)
 }
 
 //configura e inicia a conversão
-void
-ads_config(unsigned int mode, unsigned int chan)
+void ads_config(unsigned int mode, unsigned int chan)
 {
 
 	unsigned int tmp;
@@ -488,8 +479,7 @@ ads_config(unsigned int mode, unsigned int chan)
 }
 
 //ler o resultado da conversão AD e inicia uma nova conversão
-int
-ads_read(unsigned int mode, unsigned int chan)
+int ads_read(unsigned int mode, unsigned int chan)
 {
 	unsigned int tmp;
 	int result;
@@ -518,8 +508,7 @@ ads_read(unsigned int mode, unsigned int chan)
 }
 
 // retorna a temperatura medida
-double
-get_measurement(void)
+double get_measurement(void)
 {
 	int result;
 	int local_data;
@@ -538,8 +527,7 @@ get_measurement(void)
 	return(result_d);
 }
 
-double
-get_measurement_fast(void)
+double get_measurement_fast(void)
 {
 	int result;
 	double result_d;
@@ -552,8 +540,7 @@ get_measurement_fast(void)
 	return(result_d);
 }
 
-void
-unixtime2string(char* int_part, char* out_time)
+void unixtime2string(char* int_part, char* out_time)
 {
 	unsigned int nutime;
 	struct tm *nts;
@@ -583,8 +570,7 @@ void sig_handler(int signo)
   exit(0);
 }
 
-int
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	int ret;
 	int i;
